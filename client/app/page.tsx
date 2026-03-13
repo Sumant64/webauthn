@@ -1,10 +1,10 @@
 'use client'
 import { getAuthRequest, postVerifyAuthRequest } from "@/service/auth";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import { Alert } from "@mui/material";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
      <div className="container">
-        <h2>Welcome Back</h2>
+        <h2>LOGIN</h2>
 
         <div className="input-group">
           <label htmlFor="numberField">Enter Your Number</label>
@@ -81,6 +81,9 @@ export default function Home() {
         >
           {alert.message}
         </Alert>}
+            </div>
+            <div>
+              New User : <Link href={'/signup'}>Signup</Link>
             </div>
       </div>
   );
