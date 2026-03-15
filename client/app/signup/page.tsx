@@ -101,7 +101,7 @@ const Signup = () => {
       </div>
       <div>
         <p>
-          Already a user : <Link href={"/signup"}>Login</Link>
+          Already a user : <Link style={{textDecoration: 'underline'}} href={"/"}>Login</Link>
         </p>
       </div>
     </div>

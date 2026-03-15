@@ -82,8 +82,8 @@ export default function Home() {
           {alert.message}
         </Alert>}
             </div>
-            <div>
-              New User : <Link href={'/signup'}>Signup</Link>
+            <div style={{marginTop: '1rem'}}>
+              <p>New User : <Link style={{textDecoration: 'underline'}} href={'/signup'}>Signup</Link></p>
             </div>
       </div>
   );
