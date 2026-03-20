@@ -52,7 +52,11 @@ const initAuth = async (req: Request, res: Response): Promise<void> => {
                 id: user._id,
                 challenge: options.challenge,
             }),
-            { httpOnly: true, maxAge: 60000, secure: true }
+            { 
+                httpOnly: true,
+                secure: true,
+                sameSite: "none"
+             }
         );
 
         res.status(200).send(options);

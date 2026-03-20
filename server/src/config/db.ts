@@ -4,7 +4,7 @@ const connectDB = async (): Promise<void> => {
     try {
         mongoose.set('strictQuery', false);
         
-        await mongoose.connect('mongodb://127.0.0.1:27017/fingerprint');
+        await mongoose.connect('mongodb+srv://sumantshah_db_user:yvMflgcreZIlTU7l@cluster0.zzf8zov.mongodb.net/fingerprint');
         console.log('✅ Connected successfully to MongoDB');
     } catch (err) {
         console.error('❌ Database connection error:', err);

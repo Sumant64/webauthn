@@ -3,26 +3,30 @@ import { getAuthRequest, postVerifyAuthRequest } from "@/service/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
-import { Alert } from "@mui/material";
+import { Alert, AlertColor } from "@mui/material";
 import Link from "next/link";
 
 
 export default function Home() {
+  // sample commit
     const router = useRouter();
   const [phone, setPhone] = useState('');
-  const [alert, setAlert] = useState({ open: false, message: '' });
+  const [alert, setAlert] = useState<{ open: boolean; type: AlertColor; message: string }>({ open: false, type: 'info', message: '' });
 
    const login = async () => {
     try {
+      if(phone.length !== 10) {
+        return setAlert({ open: true, type: 'error', message: `Phone number should be of 10 digit` });
+      }
       const phoneNew = phone;
 
 
       // get the challenge from the server
       const initResAuth = await getAuthRequest(phoneNew);
       
-      if(!initResAuth.data) {
-        throw new Error('Something went wrong');
-      }
+      // if(!initResAuth.data) {
+      //   throw new Error('Something went wrong');
+      // }
       
       const options = initResAuth.data;
       console.log(options, '==================')
@@ -36,17 +40,23 @@ export default function Home() {
       const res = await postVerifyAuthRequest(authJSON);
 
 
-      setAlert({ open: true, message: `Successfully logged in ${phoneNew}` });
+      setAlert({ open: true, type: 'success', message: `Successfully logged in ${phoneNew}` });
 
       router.push(`/success?number=${phone}`);
 
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      console.log(err?.response?.data?.error, '00000000000error');
+      if(err?.response?.data?.error === 'User does not exists') {
+        setAlert({ open: true, type: 'error', message: `User doesn't exists.` });
+      } else {
+        setAlert({ open: true, type: 'error', message: `Something went wrong.` });
+      }
+
     }
   }
 
   const handleClose = () => {
-    setAlert({ open: false, message: '' })
+    setAlert({ open: false, type: 'info', message: '' })
   };
 
 
@@ -60,7 +70,11 @@ export default function Home() {
             type="number"
             id="numberField"
             name="numberField"
-            onChange={(event) => setPhone(event.target.value)}
+            onChange={(event) => {
+              event.target.value = event.target.value.slice(0, 10);
+              setAlert({ open: false, type: 'info', message: '' });
+              setPhone(event.target.value)
+            }}
             placeholder="Enter your phone"
             required
           />
@@ -75,7 +89,7 @@ export default function Home() {
               {alert.includes('Successfully logged in') && <p style={{color: 'green', fontSize: '20px'}}>Successfully logged in {email}</p>} */}
               {alert.message && <Alert
           onClose={handleClose}
-          severity="success"
+          severity={alert.type}
           variant="filled"
           sx={{ width: '100%' }}
         >

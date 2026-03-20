@@ -8,6 +8,8 @@ import authRoute from './routes/authRoutes';
 // Load environment variables
 dotenv.config();
 
+// sample commit
+
 // Initialize Express app
 const app: Express = express();
 
@@ -17,7 +19,7 @@ app.use(express.json());
 
 // CORS configuration
 const CLIENT_URL: string = process.env.CLIENT_URL || 'http://localhost:3000';
-app.use(cors({ origin: CLIENT_URL, credentials: true }));
+app.use(cors({ origin: [CLIENT_URL, 'http://localhost:3000'], credentials: true }));
 
 // Constants
 const RP_ID: string = 'localhost';
@@ -28,6 +30,14 @@ connectDB();
 
 // Routes
 app.use('/api/auth', authRoute);
+
+app.get("/hello", async (req, res) => {
+    try{
+        res.send({send: 'this is node js'})
+    } catch(err) {
+        console.log(err);
+    }
+})
 
 // Start server
 app.listen(port, () => {

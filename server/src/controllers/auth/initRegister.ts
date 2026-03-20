@@ -50,6 +50,7 @@ const initRegister = async (req: Request, res: Response): Promise<void> => {
                 expires: new Date(Date.now() + 25892000000),
                 httpOnly: true,
                 secure: true,
+                sameSite: "none"
             }
         );
 
